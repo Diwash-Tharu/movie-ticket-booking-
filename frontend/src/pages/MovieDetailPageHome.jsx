@@ -1,7 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import {movieDetailHStyles} from '../assets/dummyStyles'
-import {movies} from "../assets/dummymoviedata"
+import  movies from "../assets/dummymoviedata"
 import { useLocation, useNavigate, useParams, Link} from 'react-router-dom';
+import { ArrowLeft, Calendar, Play, Star, User, X, Clock } from 'lucide-react';
 
 const ROWS = [
     { id: "A", type: "standard", count: 8 },
@@ -461,7 +462,7 @@ const handleBookNow = () => {
             {/* Cast */}
             <div className={movieDetailHStyles.castCard}>
               <h3 className={movieDetailHStyles.castTitle} style={{ fontFamily: "'Cinzel', serif" }}>
-                <Users className={movieDetailHStyles.castTitleIcon} />
+                <User className={movieDetailHStyles.castTitleIcon} />
                 <span>Cast</span>
               </h3>
 

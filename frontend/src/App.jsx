@@ -10,6 +10,7 @@ import Booking from './pages/Booking'
 import Contact from './pages/Contact'
 import MoviesDetailPage from './pages/MoviesDetailPage'
 import MoviesDetailPageHome from './pages/MovieDetailPageHome'
+import SeatSelector from './pages/SeatSelector'
 
 const App = () => {
   return (
@@ -25,6 +26,9 @@ const App = () => {
 
         <Route path="/movies/:id" element={<MoviesDetailPage/>}/>
         <Route path="/movie/:id" element={<MoviesDetailPageHome/>}/>
+        
+        <Route  path="movies/:id/seat/:slot" element={<SeatSelector/>}/>
+         <Route  path="movies/:id/seat-selector/:slot" element={<SeatSelector/>}/>
       </Routes>
     </>
   )

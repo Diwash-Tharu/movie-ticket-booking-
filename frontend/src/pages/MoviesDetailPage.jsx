@@ -1,9 +1,11 @@
 import React, { useMemo, useState, useEffect} from 'react'
 import {movieDetailStyles, movieDetailCSS} from '../assets/dummyStyles'
-import {movies} from '../assets/dummymoviedata' 
+import movies from '../assets/dummymdata' 
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, Play, Star, User, X} from 'lucide-react';
-import Movie from './Movie';
+import { ArrowLeft, Calendar, Play, Star, User, X } from 'lucide-react';
+// react-toastify
+import { toast } from 'react-toastify';
+// import Movie from './Movie';
 
 const ROWS = [
   { id: "A", type: "standard", count: 8 },
@@ -300,16 +302,17 @@ useEffect(()=>{
 return (
 
     <div className={movieDetailStyles.container}>
-        {showTrailer && selectedTrailerId && (
+        {showTrailer && 
+        selectedTrailerId && (
             <div className={movieDetailStyles.modalOverlay}>
                 <div className={movieDetailStyles.modalContainer}>
                     <button 
                     onClick={closeTrailer}
                     className={movieDetailStyles.closeButton}>
                         <X size={36}/>
-                    </button>
+                    </button> 
 
-                     <div className={movieDetailStyles.videoContainer}>
+                      <div className={movieDetailStyles.videoContainer}>
                         <iframe
                         key={selectedTrailerId}
                         width="100%"
