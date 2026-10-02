@@ -173,6 +173,8 @@ const clearSelection=() => setSelected(new Set());
     return sum + basePrice * multiplier;
   }, 0);
 
+//   const selectedCount = selected.size;
+
  
 
   return (

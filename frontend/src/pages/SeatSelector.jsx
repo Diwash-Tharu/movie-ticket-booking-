@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-import SeatSelectorPage from '../components/SeatSelectorPage'   
+import SeatSelectorPage from '../components/SeatSelectorPage'  
+
 
 const SeatSelector = () => {
   return (

@@ -302,8 +302,7 @@ useEffect(()=>{
 return (
 
     <div className={movieDetailStyles.container}>
-        {showTrailer && 
-        selectedTrailerId && (
+        {showTrailer && selectedTrailerId && (
             <div className={movieDetailStyles.modalOverlay}>
                 <div className={movieDetailStyles.modalContainer}>
                     <button 
