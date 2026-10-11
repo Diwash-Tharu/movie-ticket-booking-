@@ -65,4 +65,10 @@ const movieSchema= new mongoose.Schema({
     producers: [personSchema],
 
     story: { type: String, trim: true },
+    latestTrailer: latestTrailerSchema
+},{
+    timestamps:true
 })
+
+const Movie=mongoose.model("Movie",movieSchema) || mongoose.models.Movie;
+export default Movie;
