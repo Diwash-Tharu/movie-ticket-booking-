@@ -117,26 +117,33 @@ export const registerUser = async (req, res) => {
         };
 
         //  or we can use in another way to  insert the data into the database 
-           const newUsers = new User.create({
-            fullName:fullName.trim(),
-            username:username.trim(),
-            email:email.trim().toLowerCase(),
-            phone:phone.trim(),
-            password:hashedPassword,
-            birthDate:parseBirth
-        })
+        //    const newUsers = new User.create({
+        //     fullName:fullName.trim(),
+        //     username:username.trim(),
+        //     email:email.trim().toLowerCase(),
+        //     phone:phone.trim(),
+        //     password:hashedPassword,
+        //     birthDate:parseBirth
+        // })
 
-        //  here is the mongo db iinsert getting the data 
-        const tokesn =mkToken({id:newUsers._id})
-        const userToReturns={
-            id:newUsers._id,
-            fullName:newUsers.fullName,
-            username:newUsers.username,
-            email:newUsers.email,
-            phone:newUsers.phone,
-            birthDate:newUsers.birthDate
-        };
+        // //  here is the mongo db iinsert getting the data 
+        // const tokesns =mkToken({id:newUsers._id})
+        // const userToReturns={
+        //     id:newUsers._id,
+        //     fullName:newUsers.fullName,
+        //     username:newUsers.username,
+        //     email:newUsers.email,
+        //     phone:newUsers.phone,
+        //     birthDate:newUsers.birthDate
+        // };
 
+
+        // return res.status(201).json({
+        //     success:true,
+        //     message:"User registered successfully",
+        //     token:tokesns,
+        //     user:userToReturns
+        // })
         
 
         return res.status(201).json({
