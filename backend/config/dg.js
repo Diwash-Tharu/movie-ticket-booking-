@@ -1,17 +1,17 @@
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
 
-// const connectDB = async () => {
+const connectDB = async () => {
 
-//     await mongoose.connect("mongodb+srv://chaudharymama20_db_user:oxiGzs2KNaQLdR1o@cluster0.guodhz2.mongodb.net/?appName=Cluster0")
-//     // mongodb+srv://chaudharymama20_db_user:<db_password>@cluster0.9qo3glk.mongodb.net/?appName=Cluster0
+    await mongoose.connect("mongodb+srv://chaudharymama20_db_user:nzfiG7XdJo87FKrN@cluster0.dhooeve.mongodb.net/?appName=Cluster0")
+    // mongodb+srv://chaudharymama20_db_user:<db_password>@cluster0.9qo3glk.mongodb.net/?appName=Cluster0
 
-//     .then(() =>console.log("MongoDB connected successfully"));
+    .then(() =>console.log("MongoDB connected successfully"));
     
-// }
-// export default connectDB;
+}
+export default connectDB;
 
 
-
+// nzfiG7XdJo87FKrN
 
 
 // import mongoose from "mongoose";
@@ -33,17 +33,17 @@
 
 // export default connectDB;
 
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
-const connectDB = async () => {
-    try {
-        const dbconnection=await mongoose.connect(process.env.DATABASE_URL);
-        console.log("MongoDB connected successfully", dbconnection.connection.host);
+// const connectDB = async () => {
+//     try {
+//         const dbconnection=await mongoose.connect(process.env.DATABASE_URL);
+//         console.log("MongoDB connected successfully", dbconnection.connection.host);
 
-    } catch (error) {
-        console.error("MongoDB connection failed:", error.message);
-        throw error;
-    }
+//     } catch (error) {
+//         console.error("MongoDB connection failed:", error.message);
+//         throw error;
+//     }
 
 //      try {
 //     await mongoose.connect("mongodb+srv://chaudharymama20_db_user:oxiGzs2KNaQLdR1o@cluster0.guodhz2.mongodb.net/?appName=Cluster0");
@@ -54,9 +54,9 @@ const connectDB = async () => {
 //     console.dir(err);
 //   }
 
-};
+// };
     
-export default connectDB;
+// export default connectDB;
 
 
 // import mongoose from "mongoose";
