@@ -1,5 +1,5 @@
 import e from "express";
-import User from "../models/userModel"
+import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -24,14 +24,20 @@ export const registerUser = async (req, res) => {
                 message:"Please fill all the fields"})
 
         }
-        if(fullName !=='string' || fullName.trim().length < 3){
+        // console.log("Full Name:", fullName);
+        // console.log("Full Name Length:", fullName.trim().length);
+        // console.log("Full Name Type:", typeof fullName);
+        if( typeof fullName !=='string' || fullName.trim().length < 3){
             return res.status(400).json({
+                
                 success:false,
                 message:"Full name must be a string and at least 3 characters long"
             })
+            // console.log("if condition is true for full name");
+
         }
 
-         if(username !=='string' || username.trim().length < 3){
+         if( typeof username !=='string' || username.trim().length < 3){
             return res.status(400).json({
                 success:false,
                 message:"Username must be a string and at least 3 characters long"
@@ -85,7 +91,7 @@ export const registerUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        //  inserting the user into the database
+        //  creatinf the new instase to insert the data into the database
         const newUser = new User({
             fullName:fullName.trim(),
             username:username.trim(),
@@ -94,17 +100,44 @@ export const registerUser = async (req, res) => {
             password:hashedPassword,
             birthDate:parseBirth
         })
+        const savedUser = await newUser.save();
 
-        //  here is the mongo db it
-        const token =mkToken({id:newUser.__id})
+        console.log("User saved successfully:", savedUser._id);
+
+
+        //   here is the mongo db iinsert data
+        const token =mkToken({id:savedUser._id})
         const userToReturn={
-            id:newUser._id,
-            fullName:newUser.fullName,
-            username:newUser.username,
-            email:newUser.email,
-            phone:newUser.phone,
-            birthDate:newUser.birthDate
+            id:savedUser._id,
+            fullName:savedUser.fullName,
+            username:savedUser.username,
+            email:savedUser.email,
+            phone:savedUser.phone,
+            birthDate:savedUser.birthDate
         };
+
+        //  or we can use in another way to  insert the data into the database 
+           const newUsers = new User.create({
+            fullName:fullName.trim(),
+            username:username.trim(),
+            email:email.trim().toLowerCase(),
+            phone:phone.trim(),
+            password:hashedPassword,
+            birthDate:parseBirth
+        })
+
+        //  here is the mongo db iinsert getting the data 
+        const tokesn =mkToken({id:newUsers._id})
+        const userToReturns={
+            id:newUsers._id,
+            fullName:newUsers.fullName,
+            username:newUsers.username,
+            email:newUsers.email,
+            phone:newUsers.phone,
+            birthDate:newUsers.birthDate
+        };
+
+        
 
         return res.status(201).json({
             success:true,

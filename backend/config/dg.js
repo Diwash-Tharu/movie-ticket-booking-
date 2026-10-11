@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
 
-    await mongoose.connect("mongodb+srv://chaudharymama20_db_user:nzfiG7XdJo87FKrN@cluster0.dhooeve.mongodb.net/?appName=Cluster0")
+    await mongoose.connect("mongodb+srv://chaudharymama20_db_user:nzfiG7XdJo87FKrN@cluster0.dhooeve.mongodb.net/MovieBook")
     // mongodb+srv://chaudharymama20_db_user:<db_password>@cluster0.9qo3glk.mongodb.net/?appName=Cluster0
 
     .then(() =>console.log("MongoDB connected successfully"));
