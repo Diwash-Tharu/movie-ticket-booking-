@@ -219,9 +219,148 @@ export async function createMovie(req, res){
 // GetMovies (All)
 export async function getMovies (req, res){
     try{
+    // here we are generatin the query 
+    const {category, type, sort='-createdAt', page=1, limit=12, search, latestTrailer} = req.query;
+    let filter ={};
 
+    // getMovies
+    if (typeof category === "string" && category.trim()) filter.categories = { $in: [category.trim()] };
+    if (typeof type === "string" && type.trim()) filter.type = type.trim();
+    if (typeof search === "string" && search.trim()) {
+      const q = search.trim();
+      filter.$or = [
+        { movieName: { $regex: q, $options: "i" } },
+        { "latestTrailer.title": { $regex: q, $options: "i" } },
+        { story: { $regex: q, $options: "i" } },
+      ];
+    }
+    if(latestTrailer && String(latestTrailer).toLowerCase() !=='false'){
+        filter =Object.keys(filter).length === 0?{
+            type:"latestTrailers"
+        }:{
+            $and:[filter,{type:'latestTrailers'}]
+        }
+    }
+
+    const pg = Math.max(1, parseInt(page, 10) || 1);
+    const lim = Math.min(200, parseInt(limit, 10) || 12);
+    const skip = (pg - 1) * lim;
+
+    const total = await Movie.countDocuments(filter);
+    const items = await Movie.find(filter).sort(sort).skip(skip).limit(lim).lean();
+    
+    const normalized =(items ||[]).map(normalizeItemForOutput)
+    return res.json({
+        success:true,
+        total,
+        page:pg,
+        limit:lim,
+        items:normalized
+    })
+    
     }
     catch(err){
-        
+        console.error("GetMovies Error :", err)
+        return res.status(500).json({
+            success:false,
+            message:"Failed to fetch movies",
+        })
     }
 }
+
+// GET a movins the ID 
+export async function getMovieById(req, res){
+    try{
+        const {id} = req.params;
+        if(!id) return res.status(400).json({
+            success:false,
+            message:"Movie ID is required"
+        })
+
+        const item = await Movie.findById(id).lean();
+        if(!item) return res.status(404).json({
+            success:false,
+            message:"Movie not found"
+        })
+        // return res.json({
+        //     success:true,
+        //     data:item
+        // })
+        const obj = normalizeItemForOutput(item);
+        
+      if (item.type === "latestTrailers" && item.latestTrailer) {
+      const lt = item.latestTrailer;
+      obj.genres = obj.genres || lt.genres || [];
+      obj.year = obj.year || lt.year || null;
+      obj.rating = obj.rating || lt.rating || null;
+      obj.duration = obj.duration || lt.duration || null;
+      obj.description = obj.description || lt.description || lt.excerpt || obj.description || "";
+    }
+    return res.json({
+      success:true,
+      item:obj
+    })
+
+    }
+    catch(error){
+        console.error("GetMovieById Error :", error)
+        return res.status(500).json({
+            success:false,
+            message:"Failed to fetch movie",
+        })
+    }
+}
+
+// DELETE a Movie and UNLINK the IMG 
+
+export async function deleteMovie(req, res) {
+  try {
+      const {id} = req.params;
+      if(!id) return res.status(400).json({
+            success:false,
+            message:"Movie ID is required"
+        })
+
+        const m = await Movie.findById(id)
+        if(!m) return res.status(404).json({
+            success:false,
+            message:"Movie not found"
+        })
+
+        // unlinking main assests
+        if(m.poster) tryUnlinkUploadUrl(m.poster);
+        if(m.latestTrailer && m.latestTrailer.thumbnail) tryUnlinkUploadUrl(m.latestTrailer.thumbnail);
+
+
+          // unlink person files
+    [(m.cast || []), (m.directors || []), (m.producers || [])].forEach(arr =>
+      arr.forEach(p => { if (p && p.file) tryUnlinkUploadUrl(p.file); })
+    );
+
+    if (m.latestTrailer) {
+      ([...(m.latestTrailer.directors || []), ...(m.latestTrailer.producers || []), ...(m.latestTrailer.singers || [])])
+        .forEach(p => { if (p && p.file) tryUnlinkUploadUrl(p.file); });
+    }
+
+    await Movie.findByIdAndDelete(id);
+    return res.json({
+      success:true,
+      message:"Movie deleted successfully"
+    })
+
+  }
+  catch (error) {
+    console.error("DeleteMovie Error :", error)
+    return res.status(500).json({
+      success:false,
+      message:"Failed to delete movie",
+    })
+  }
+}
+
+export default {
+    createMovie,
+    getMovies,
+    getMovieById,
+    deleteMovie
+    }
