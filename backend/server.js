@@ -75,6 +75,8 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./config/dg.js";
 import userRouter from "./routes/userRouter.js";
+import movieRouter from "./routes/movieRouter.js";
+import path from "path";
 
 // Database connection
 connectDB();
@@ -90,7 +92,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Routes
+app.use('/uploads', express.static(path.join(process.cwd(),'uploads')))
 app.use("/api/auth", userRouter);
+app.use("/api/movies", movieRouter);
 
 //  console.log("Server is running on http://localhost:" + port);
 

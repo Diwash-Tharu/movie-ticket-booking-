@@ -17,7 +17,7 @@ const slotSchema= new mongoose.Schema({
     _id:false
 })
 
-const latestTrailerSchema= new mongoose.SchemaType({
+const latestTrailerSchema= new mongoose.Schema({
     
     title: { type: String, trim: true },
     genres: [{ type: String }],
